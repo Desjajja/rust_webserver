@@ -25,8 +25,7 @@ fn main() {
                         let length = content.len();
                         let response: String;
                         if length == 0 {
-                            println!("length of content is 0");
-                            response = format!(r"{status_line}\r\n\r\n}");
+                            response = format!(r"{status_line}\r\n\r\n");
                         } else {
                             response = format!(
                                 r"{status_line}\r\n\r\nContent-Type: {content_type}\r\n\r\nContent-Length: {length}\r\n\r\n{content}\r\n\r\n"
