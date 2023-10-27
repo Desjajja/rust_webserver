@@ -23,10 +23,9 @@ fn main() {
                         let content_type = "text/plain";
                         let content = &caps[0][1..].trim();
                         let length = content.len();
-                        format!("""{status_line}\r\n\r\n
-                        Content-Type: {content_type}\r\n\r\n
-                        Content-Length: {length}\r\n\r\n
-                        {content}\r\n\r\n""")
+                        format!(
+                            r"{status_line}\r\n\r\nContent-Type: {content_type}\r\n\r\nContent-Length: {length}\r\n\r\n{content}\r\n\r\n"
+                        )
                     }
                     _ => String::from("HTTP/1.1 404 Not Found\r\n\r\n"),
                 };
