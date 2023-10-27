@@ -2,7 +2,6 @@
 use std::net::TcpListener;
 use std::io::{BufReader, BufRead, Write};
 
-use nom::AsBytes;
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
