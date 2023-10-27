@@ -19,7 +19,7 @@ fn main() {
                 let response:String = match uri {
                     "/" => "HTTP/1.1 200 OK\r\n\r\n".to_owned(),
                     _ => {
-                        if uri.starts_with("/echo/") {
+                        if uri.contains("/echo/") {
                             let content = uri.split_once("/echo/").unwrap().1;
                             format!(r"HTTP/1.1 200 OK\r\n\r\nContent-Type: text/plain\r\n\r\nContent-Length: {}\r\n\r\n{}\r\n\r\n",content.len(), content)
                         } else {
