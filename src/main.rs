@@ -21,7 +21,8 @@ fn main() {
                     _ => {
                         if uri.contains("/echo/") {
                             let content = uri.split_once("/echo/").unwrap().1;
-                            format!(r"HTTP/1.1 200 OK\r\n\r\nContent-Type: text/plain\r\n\r\nContent-Length: {}\r\n\r\n{}\r\n\r\n",content.len(), content)
+                            // format!(r"HTTP/1.1 200 OK\r\n\r\nContent-Type: text/plain\r\n\r\nContent-Length: {}\r\n\r\n{}\r\n\r\n",content.len(), content)
+                            "HTTP/1.1 200 OK\r\n\r\n".to_owned()
                         } else {
                             "HTTP/1.1 404 Not Found\r\n\r\n".to_owned()
                         }
