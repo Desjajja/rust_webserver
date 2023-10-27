@@ -7,15 +7,15 @@ fn main() {
     println!("Logs from your program will appear here!");
 
     // Uncomment this block to pass the first stage
-
+    
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
-
+    
     for stream in listener.incoming() {
         match stream {
             Ok(mut stream) => {
                 let buf_reader = BufReader::new(&stream);
                 let header = buf_reader.lines().next().unwrap().unwrap();
-                let mut uri = header.split(' ').nth(1).unwrap();
+                let uri = header.split(' ').nth(1).unwrap();
                 let response:String = match uri {
                     "/" => "HTTP/1.1 200 OK\r\n\r\n".to_owned(),
                     _ => {
