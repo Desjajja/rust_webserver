@@ -1,7 +1,6 @@
 // Uncomment this block to pass the first stage
 use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
-// use anyhow::{Result};
 use http_server_starter_rust::response::{get_response, Status, ContentType};
 use threadpool::ThreadPool;
 
