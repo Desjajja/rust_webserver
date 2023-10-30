@@ -1,6 +1,7 @@
 // Uncomment this block to pass the first stage
 use std::io::{BufRead, BufReader, Write};
 use std::net::TcpListener;
+use http_server_starter_rust::response::{get_response, Status, ContentType};
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -14,21 +15,28 @@ fn main() {
         match stream {
             Ok(mut stream) => {
                 let buf_reader = BufReader::new(&stream);
-                let header = buf_reader.lines().next().unwrap().unwrap();
+                let mut request = buf_reader.lines();
+                let header = request.nth(0).unwrap().unwrap();
                 let uri = header.split(' ').nth(1).unwrap();
-                let response:String = match uri {
-                    "/" => "HTTP/1.1 200 OK\r\n\r\n".to_owned(),
+                let host: String = request.nth(2).unwrap().unwrap();
+                let user_agent: String = request.nth(3).unwrap().unwrap();
+                let (status, content_type, content) = match uri {
+                    "/" => (Status::OK, ContentType::Unknown, None),
                     _ => {
-                        if uri.contains("/echo/") {
+                        if uri.starts_with("/echo") {
                             let content = uri.split_once("/echo/").unwrap().1;
-                            format!("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}", content.len(), content)
-                            // format!(r"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {}\r\n\r\n{}",content.len(), content)
-                            // "HTTP/1.1 200 OK\r\n\r\n".to_owned()
-                        } else {
-                            "HTTP/1.1 404 Not Found\r\n\r\n".to_owned()
+                            (Status::OK, ContentType::TextPlain, Some(content))
+                        } else if uri.starts_with("/user-agent"){
+                            let content = user_agent.as_str();
+                            (Status::OK, ContentType::TextPlain, Some(content))
+                        }
+                        else
+                        {
+                            (Status::NotFound, ContentType::Unknown, None)
                         }
                     }
                 };
+                let response = get_response(status, content_type, content);
                 stream.write_all(response.as_bytes()).unwrap();
                 println!("responded to connection");
             }
