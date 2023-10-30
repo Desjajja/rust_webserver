@@ -19,7 +19,7 @@ fn main() {
                 let header = request.nth(0).unwrap().unwrap();
                 let uri = header.split(' ').nth(1).unwrap();
                 // let host: String = request.nth(2).unwrap().unwrap();
-                let user_agent = request.nth(3);
+                let user_agent = request.nth(2);
                 let (status, content_type, content) = match uri {
                     "/" => (Status::OK, ContentType::Unknown, None),
                     _ => {
