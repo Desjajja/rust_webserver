@@ -1,5 +1,5 @@
 pub mod response {
-    pub fn get_response(status: Status, content_type: ContentType, content: Option<&str>) -> String {
+    pub fn get_response(status: Status, content_type: ContentType, content: Option<String>) -> String {
 		match status {
 			Status::NotFound => "HTTP/1.1 404 Not Found\r\n\r\n".to_owned(),
 			Status::OK => {

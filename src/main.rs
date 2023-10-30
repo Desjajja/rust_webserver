@@ -18,16 +18,16 @@ fn main() {
                 let mut request = buf_reader.lines();
                 let header = request.nth(0).unwrap().unwrap();
                 let uri = header.split(' ').nth(1).unwrap();
-                let host: String = request.nth(2).unwrap().unwrap();
-                let user_agent: String = request.nth(3).unwrap().unwrap();
+                // let host: String = request.nth(2).unwrap().unwrap();
+                let user_agent = request.nth(3);
                 let (status, content_type, content) = match uri {
                     "/" => (Status::OK, ContentType::Unknown, None),
                     _ => {
                         if uri.starts_with("/echo") {
-                            let content = uri.split_once("/echo/").unwrap().1;
+                            let content = uri.split_once("/echo/").unwrap().1.to_owned();
                             (Status::OK, ContentType::TextPlain, Some(content))
                         } else if uri.starts_with("/user-agent"){
-                            let content = user_agent.as_str();
+                            let content = user_agent.unwrap().unwrap();
                             (Status::OK, ContentType::TextPlain, Some(content))
                         }
                         else
