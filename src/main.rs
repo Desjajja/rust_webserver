@@ -19,7 +19,7 @@ fn main() {
                 let header = request.nth(0).unwrap().unwrap();
                 let uri = header.split(' ').nth(1).unwrap();
                 // let host: String = request.nth(2).unwrap().unwrap();
-                let user_agent = request.nth(2);
+                let mut user_agent = request.filter(|line| {line.as_ref().unwrap().starts_with("User-Agent")});
                 let (status, content_type, content) = match uri {
                     "/" => (Status::OK, ContentType::Unknown, None),
                     _ => {
@@ -27,8 +27,9 @@ fn main() {
                             let content = uri.split_once("/echo/").unwrap().1.to_owned();
                             (Status::OK, ContentType::TextPlain, Some(content))
                         } else if uri.starts_with("/user-agent"){
-                            let user_agent = user_agent.unwrap().unwrap();
+                            let user_agent = user_agent.next().unwrap().unwrap();
                             let content = user_agent.split_once(' ').unwrap().1.to_owned();
+                            println!("matched field:{}", user_agent.split_once(' ').unwrap().0);
                             (Status::OK, ContentType::TextPlain, Some(content))
                         }
                         else
