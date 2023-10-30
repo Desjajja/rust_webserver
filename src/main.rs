@@ -11,7 +11,7 @@ fn main() {
     // Uncomment this block to pass the first stage
     
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
-    let pool = ThreadPool::new(7);
+    let pool = ThreadPool::new(4);
     for _stream in listener.incoming() {
         let stream = _stream.unwrap();
         pool.execute(||{
