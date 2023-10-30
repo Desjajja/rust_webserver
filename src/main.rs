@@ -3,6 +3,7 @@ use std::io::{BufRead, BufReader, Write};
 use std::net::{TcpListener, TcpStream};
 use http_server_starter_rust::response::{get_response, Status, ContentType};
 use threadpool::ThreadPool;
+// use std::thread;
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -11,10 +12,11 @@ fn main() {
     // Uncomment this block to pass the first stage
     
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
-    let pool = ThreadPool::new(10);
-    for _stream in listener.incoming() {
-        let stream = _stream.unwrap();
-        pool.execute(||{
+    let pool = ThreadPool::new(4);
+
+    for stream in listener.incoming() {
+        let stream = stream.unwrap();
+        pool.execute(|| {
             handle_stream(stream);
         });
     }
@@ -22,19 +24,19 @@ fn main() {
 
 fn handle_stream(mut stream: TcpStream) {
 
-            let buf_reader = BufReader::new(&stream);
+            let buf_reader = BufReader::new(&mut stream);
             let mut request = buf_reader.lines();
             let header = request.nth(0).unwrap().unwrap();
             let uri = header.split(' ').nth(1).unwrap();
-            // let host: String = request.nth(2).unwrap().unwrap();
-            let user_agent = request.find(|line| {line.as_ref().unwrap().starts_with("User-Agent")});
             let (status, content_type, content) = match uri {
                 "/" => (Status::OK, ContentType::Unknown, None),
                 _ => {
                     if uri.starts_with("/echo") {
                         let content = uri.split_once("/echo/").unwrap().1.to_owned();
                         (Status::OK, ContentType::TextPlain, Some(content))
-                    } else if uri.starts_with("/user-agent"){
+                    } 
+                    else if uri.starts_with("/user-agent"){
+                        let user_agent = request.find(|line| {line.as_ref().unwrap().starts_with("User-Agent")});
                         let user_agent = user_agent.unwrap().unwrap();
                         let content = user_agent.split_once(' ').unwrap().1.to_owned();
                         (Status::OK, ContentType::TextPlain, Some(content))
@@ -47,6 +49,6 @@ fn handle_stream(mut stream: TcpStream) {
             };
             let response = get_response(status, content_type, content);
             stream.write_all(response.as_bytes()).unwrap();
-            println!("responded to connection");
+            // println!("responded to connection");
 
     }
