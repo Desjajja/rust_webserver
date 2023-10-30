@@ -27,7 +27,8 @@ fn main() {
                             let content = uri.split_once("/echo/").unwrap().1.to_owned();
                             (Status::OK, ContentType::TextPlain, Some(content))
                         } else if uri.starts_with("/user-agent"){
-                            let content = user_agent.unwrap().unwrap();
+                            let user_agent = user_agent.unwrap().unwrap();
+                            let content = user_agent.split_once(' ').unwrap().1.to_owned();
                             (Status::OK, ContentType::TextPlain, Some(content))
                         }
                         else
