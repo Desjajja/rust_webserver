@@ -23,6 +23,7 @@ pub mod response {
 	
 	pub enum ContentType{
 		TextPlain,
+		File,
 		Unknown,
 	}
 
