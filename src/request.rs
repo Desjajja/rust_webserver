@@ -1,13 +1,13 @@
 use std::collections::HashMap;
 
-pub struct HttpRequest<'a> { // change items to slice since HttpRequest object outlives the rest process in a handle_connection function.
+pub struct HttpRequest<'a> { // change items to slice since HttpRequest lives within the lifetime of request
     pub method: Option<&'a str>,
     pub path: Option<&'a str>,
     pub version: Option<&'a str>,
     pub header_fields: HashMap<String, &'a str>, // key is a String since to_lowercase returns String
     pub body: Option<&'a str>,
 }
-pub fn parse_request<'a> (request: &'a str) -> Option<HttpRequest> {
+pub fn parse_request (request: &str) -> Option<HttpRequest> {
     let mut method = None;
     let mut path = None;
     let mut version = None;
