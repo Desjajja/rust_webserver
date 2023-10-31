@@ -123,7 +123,11 @@ fn post_file(req: HttpRequest, root_dir: Option<String>) -> String {
         Ok(mut f) => f.write_all(req.body.unwrap().as_bytes()).unwrap(),
         Err(_) => return handle_404(),
     }
-    handle_ok()
+    handle_201()
+}
+
+fn handle_201() -> String {
+    get_response(Status::Created, ContentType::None, None)
 }
 
 fn handle_echo(req: HttpRequest) -> String {

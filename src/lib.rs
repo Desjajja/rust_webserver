@@ -13,11 +13,13 @@ pub mod response {
 					let content = content.unwrap();
 					format!("HTTP/1.1 200 OK\r\nContent-Type: {}\r\nContent-Length: {}\r\n\r\n{}", content_type, content.len(), content)
 				}
-			}
+			},
+			Status::Created => "HTTP/1.1 201 Created\r\n\r\n".to_owned()
 		}
 	}
 	pub enum Status {
 		OK,
+		Created,
 		NotFound,
 	}
 	
@@ -25,6 +27,7 @@ pub mod response {
 		TextPlain,
 		File,
 		Unknown,
+		None,
 	}
 
 	// pub struct content {
