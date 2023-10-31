@@ -32,8 +32,8 @@ fn handle_connection(mut stream: TcpStream, root_dir: Option<String> ) {
             let request = String::from_utf8_lossy(& buffer);
 
             if let Some(parsed_req) = parse_request(&request) {
-                let method = parsed_req.method.clone().unwrap().to_lowercase();
-                let uri = parsed_req.path.clone().unwrap();
+                let method = parsed_req.method.unwrap().to_lowercase();
+                let uri = parsed_req.path.unwrap();
                 let response = match method {
                     method if method == "post" => {
                         match uri {
@@ -82,7 +82,7 @@ fn handle_ok() -> String {
 }
 
 fn handle_user_agent(req: HttpRequest) -> String{
-    let content = req.header_fields.get("user-agent").unwrap().to_owned();
+    let content = req.header_fields.get("user-agent").unwrap().to_owned().to_owned();
     get_response(Status::OK, ContentType::TextPlain, Some(content))
 }
 

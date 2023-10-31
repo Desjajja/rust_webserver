@@ -1,11 +1,11 @@
 use std::collections::HashMap;
 
-pub struct HttpRequest {
-    pub method: Option<String>,
-    pub path: Option<String>,
-    pub version: Option<String>,
-    pub header_fields: HashMap<String, String>,
-    pub body: Option<String>,
+pub struct HttpRequest<'a> { // change items to slice since HttpRequest object outlives the rest process in a handle_connection function.
+    pub method: Option<&'a str>,
+    pub path: Option<&'a str>,
+    pub version: Option<&'a str>,
+    pub header_fields: HashMap<String, &'a str>, // key is a String since to_lowercase returns String
+    pub body: Option<&'a str>,
 }
 pub fn parse_request<'a> (request: &'a str) -> Option<HttpRequest> {
     let mut method = None;
@@ -19,14 +19,14 @@ pub fn parse_request<'a> (request: &'a str) -> Option<HttpRequest> {
     for (idx, line) in header.lines().enumerate() {
         if idx == 0 {
             let mut metadata = line.split_whitespace();
-            method = Some(metadata.next()?.to_owned());
-            path = Some(metadata.next()?.to_owned());
-            version = Some(metadata.next()?.to_owned());
+            method = metadata.next();
+            path = metadata.next();
+            version = metadata.next();
         } else {
             let (k, v) = line.split_once(':')?;
             header_fields.insert(
-                k.trim().to_lowercase().to_owned(), //keys are stored in lowercase
-                v.trim().to_owned(),
+                k.trim().to_lowercase(), //keys are stored in lowercase
+                v.trim(),
             );
         }
     }
@@ -34,16 +34,14 @@ pub fn parse_request<'a> (request: &'a str) -> Option<HttpRequest> {
     let length:usize = match length {
         Some(length) => {
             length
-                .parse()
+                .parse() // deref coersion happens here
                 .unwrap()
         },
         _ => 0,
     };
 
         let body = match length{
-            length if length > 0 => {
-                Some(body[..length].to_owned())
-            },
+            length if length > 0 => Some(&body[..length]),
             _ => None,
         }; 
     Some(HttpRequest {header_fields, method, path, body, version})
