@@ -1,39 +1,18 @@
-[![progress-banner](https://backend.codecrafters.io/progress/http-server/8414c3ed-107c-4f3e-a581-935c1cad437e)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# Single thread implementation
+built with `tokio`, supporting methods and serving point are as follows:
+* `GET`
+   * `/`: return 200 with empty body
+   * `/echo`: echo want ever comes after it
+   * `/user-agent`: return 200 with user-agent
+   * `/files`: fetch files from the assigned directory on server side. (set when running with `cargo run -- --directory <root-dir>`), invalid path get a 404.
+* `POST`
+   * `files`: create a file using body as its content, get 201 when succeed, 500 when failed/
 
-This is a starting point for Rust solutions to the
-["Build Your Own HTTP server" Challenge](https://app.codecrafters.io/courses/http-server/overview).
+## performance summary
+method: `GET` 
 
-[HTTP](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) is the
-protocol that powers the web. In this challenge, you'll build a HTTP/1.1 server
-that is capable of serving multiple clients.
+serving endpoint: `http://localhost:4321/` 
 
-Along the way you'll learn about TCP servers,
-[HTTP request syntax](https://www.w3.org/Protocols/rfc2616/rfc2616-sec5.html),
-and more.
+concurrency: 20,000
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
-
-# Passing the first stage
-
-The entry point for your HTTP server implementation is in `src/main.rs`. Study
-and uncomment the relevant code, and push your changes to pass the first stage:
-
-```sh
-git add .
-git commit -m "pass 1st stage" # any msg
-git push origin master
-```
-
-Time to move on to the next stage!
-
-# Stage 2 & beyond
-
-Note: This section is for stages 2 and beyond.
-
-1. Ensure you have `cargo (1.70)` installed locally
-1. Run `./your_server.sh` to run your program, which is implemented in
-   `src/main.rs`. This command compiles your Rust project, so it might be slow
-   the first time you run it. Subsequent runs will be fast.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+<img width="232" alt="tokio-20000" src="https://github.com/Desjajja/rust_webserver/assets/58029489/f8070af4-a521-42e4-9900-ba374f76493c">
