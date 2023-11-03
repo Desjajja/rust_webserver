@@ -1,4 +1,4 @@
-# Rust Web Server
+# a Web Server in Rust
 ## Implementations
 1. multithread (threadpool): on branch `master`
 2. async (tokio): on branch `tokio`
@@ -28,3 +28,8 @@ serving endpoint: `http://localhost:4321/`
 concurrency: 20,000
 
 <img width="243" alt="thread_pool-20000" src="https://github.com/Desjajja/rust_webserver/assets/58029489/f7932ccd-942d-4965-9303-6348c29f2e32">
+
+## Acknowledgement
+[CodeCrafters.io](https://app.codecrafters.io/catalog): *this project starts from one of their their chanllenging and scrupulous challenges.*
+
+[Rust Programming Language](https://www.rust-lang.org/): *most intelligent compiler ever!*
