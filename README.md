@@ -33,3 +33,5 @@ concurrency: 20,000
 [CodeCrafters.io](https://app.codecrafters.io/catalog): *this project starts from one of their their chanllenging and scrupulous challenges.*
 
 [Rust Programming Language](https://www.rust-lang.org/): *most intelligent compiler ever!*
+
+[oha](https://github.com/hatoo/oha): *its well designed tui and function made testing less upset*
