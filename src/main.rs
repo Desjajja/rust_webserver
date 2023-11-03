@@ -1,14 +1,15 @@
-use std::io::{Write, Read};
+use std::io::Write;
 use std::net::{TcpListener, TcpStream};
 use http_server_starter_rust::response::{get_response, Status, ContentType};
 use http_server_starter_rust::request::{HttpRequest, parse_request};
 use threadpool::ThreadPool;
+use std::io::{BufRead, BufReader};
 use std::path::PathBuf;
 
 fn main() {
 
     let listener = TcpListener::bind("127.0.0.1:4221").unwrap();
-    let pool = ThreadPool::new(4);
+    let pool = ThreadPool::new(10);
     let mut args = std::env::args();
     let mut root_dir = None;
     if let Some(arg) = args.nth(1) {
@@ -27,10 +28,10 @@ fn main() {
 
 
 fn handle_connection(mut stream: TcpStream, root_dir: Option<String> ) {
-            let mut buffer = [0u8; 2048] ; // 2KB sized buffer for header
-            stream.read(& mut buffer).unwrap();
-            let request = String::from_utf8_lossy(& buffer);
-
+            let mut reader = BufReader::new(&mut stream);
+            let received = reader.fill_buf().unwrap();
+            let request = String::from_utf8_lossy(received);
+            
             if let Some(parsed_req) = parse_request(&request) {
                 let method = parsed_req.method.unwrap().to_lowercase();
                 let uri = parsed_req.path.unwrap();
