@@ -24,6 +24,10 @@ pub fn respond_405() -> String {
 	get_response(Status::NotAllowed, ContentType::None , None)
 }
 
+pub fn respond_500() -> String {
+	get_response(Status::InternalServerError, ContentType::None, None)
+}
+
 fn get_response(status: Status, content_type: ContentType, content: Option<String>) -> String {
 	match status {
 		Status::NotFound => "HTTP/1.1 404 Not Found\r\n\r\n".to_owned(),
@@ -41,6 +45,7 @@ fn get_response(status: Status, content_type: ContentType, content: Option<Strin
 		},
 		Status::Created => "HTTP/1.1 201 Created\r\n\r\n".to_owned(),
 		Status::NotAllowed => "HTTP/1.1 405 Method Not Allowed\r\n\r\n".to_owned(),
+		Status::InternalServerError => "HTTP/1.1 500 Internal Server Error\r\n\r\n".to_owned(),
 	}
 }
 enum Status {
@@ -48,6 +53,7 @@ enum Status {
 	Created,
 	NotFound,
 	NotAllowed,
+	InternalServerError,
 }
 
 enum ContentType{
