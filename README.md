@@ -8,7 +8,7 @@ built with `tokio`, supporting methods and serving point are as follows:
 * `POST`
    * `files`: create a file using body as its content, get 201 when succeed, 500 when failed/
 
-## performance summary
+## Performance Summary
 method: `GET` 
 
 serving endpoint: `http://localhost:4321/` 
