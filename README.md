@@ -11,10 +11,9 @@
 ## Serving Endpoionts
 * `GET`
    * `/`: return 200 with empty body
-     <details>
-     <summary>Demo</summary>
+
      ![root](https://github.com/Desjajja/rust_webserver/assets/58029489/3dd7890a-5aee-4441-b81c-a90cc5bc5fb1)
-     </details>
+ 
    * `/echo`: echo whatever comes after it
  
      ![echo](https://github.com/Desjajja/rust_webserver/assets/58029489/77b4b549-5410-430a-bf78-9e24a08dd97b)
