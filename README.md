@@ -1,4 +1,4 @@
-# a Web Server in Rust
+# A Web Server in Rust
 ## Implementations
 1. multithread (threadpool): on branch `master`
 2. async (tokio): on branch `tokio`
