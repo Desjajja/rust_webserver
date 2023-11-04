@@ -11,12 +11,23 @@
 ## Serving Endpoionts
 * `GET`
    * `/`: return 200 with empty body
+     <details>
+     <summary>Demo</summary>
+     ![root](https://github.com/Desjajja/rust_webserver/assets/58029489/3dd7890a-5aee-4441-b81c-a90cc5bc5fb1)
+     </details>
    * `/echo`: echo whatever comes after it
+ 
+     ![echo](https://github.com/Desjajja/rust_webserver/assets/58029489/77b4b549-5410-430a-bf78-9e24a08dd97b)
+
    * `/user-agent`: return 200 with user-agent
    * `/files`: fetch files from the assigned directory on server side. (set when running with `cargo run -- --directory <root-dir>`), invalid path get a 404.
+ 
+     ![get_file](https://github.com/Desjajja/rust_webserver/assets/58029489/b4b6a673-85fb-4c0d-91db-cfb7c76d3690)
 * `POST`
-   * `/files`: create a file using body as its content, get 201 when succeeded, 500 when failed
 
+   * `/files`: create a file using body as its content, get 201 when succeeded, 500 when failed
+     
+![post_file](https://github.com/Desjajja/rust_webserver/assets/58029489/06f5c79d-5b63-45c8-a1a1-d457a9ee2eec)
 
 ## Performance Summary
 device: Laptop
