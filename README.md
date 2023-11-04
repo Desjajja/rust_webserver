@@ -2,7 +2,7 @@
 built with `tokio`, supporting methods and serving point are as follows:
 * `GET`
    * `/`: return 200 with empty body
-   * `/echo`: echo want ever comes after it
+   * `/echo`: echo whatever comes after it
    * `/user-agent`: return 200 with user-agent
    * `/files`: fetch files from the assigned directory on server side. (set when running with `cargo run -- --directory <root-dir>`), invalid path get a 404.
 * `POST`
