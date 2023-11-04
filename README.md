@@ -5,13 +5,13 @@
 
 ## Features
 1. High concurrency (as shown in section `Performance Summary`)
-2. multiply methods supported(`POST`, `GET`), along with various service(echo, file IO, etc.)
+2. multiply methods supported(`POST`, `GET`), along with various services(echo, file IO, etc.)
 3. modular architecture (as abstracted into `request` and `response` mods)
 
 ## Serving Endpoionts
 * `GET`
    * `/`: return 200 with empty body
-   * `/echo`: echo want ever comes after it
+   * `/echo`: echo whatever comes after it
    * `/user-agent`: return 200 with user-agent
    * `/files`: fetch files from the assigned directory on server side. (set when running with `cargo run -- --directory <root-dir>`), invalid path get a 404.
 * `POST`
@@ -19,6 +19,8 @@
 
 
 ## Performance Summary
+device: Laptop
+
 Num of thread: 10
 
 method: GET
