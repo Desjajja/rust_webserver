@@ -66,8 +66,8 @@ struct ImageJson {
     id: usize,
     img_src: String,
 }
-
-fn list_file( root_dir: Option<String>) -> Vec<u8> {
+// fn list_file(root_dir: Option<String>, content_type: ContentType) -> Vec<u8> // todo: show specific file types
+fn list_file(root_dir: Option<String>) -> Vec<u8> {
     match root_dir {
         None => respond_500(),
         Some(root_dir) => {
@@ -88,7 +88,7 @@ fn list_file( root_dir: Option<String>) -> Vec<u8> {
                     .collect::<Vec<_>>();
                 let json = serde_json::to_string(&entries).unwrap();
                 // respond_200_with_text(json)
-                respond_200_with_content(json.into_bytes(),ContentType::TextPlain)
+                respond_200_with_content(json.into_bytes(), ContentType::TextPlain)
             } else {
                 respond_500()
             }
@@ -129,31 +129,11 @@ fn handle_user_agent(req: HttpRequest) -> Vec<u8> {
     respond_200_with_content(content.into_bytes(), ContentType::TextPlain)
 }
 
-// async fn get_images(req: HttpRequest<'_>, root_dir: Option<String>) -> Vec<u8> {
-//     match root_dir {
-//         None => respond_500(),
-//         Some(root_dir) => {
-//             let filename = req.path.unwrap().split('/').last().unwrap().to_owned();
-//             let mut path_buffer = PathBuf::new();
-//             path_buffer.push(PathBuf::from(root_dir));
-//             path_buffer.push(PathBuf::from(filename));
-//             if !path_buffer.exists() {
-//                 return respond_404();
-//             }
-
-//             let mut buffer = Vec::new();
-//             let mut f = File::open(path_buffer).await.unwrap();
-//             f.read_to_end(&mut buffer).await.unwrap();
-//             respond_200_with_file(buffer)
-//         }
-//     }
-// }
-
-async fn get_files(req: HttpRequest<'_>, root_dir: Option<String>, content_type: ContentType) -> Vec<u8> {
+async fn get_files(req: HttpRequest<'_>, root_dir: Option<String>) -> Vec<u8> {
     match root_dir {
         None => respond_500(),
         Some(root_dir) => {
-            let filename = req.path.unwrap().split('/').last().unwrap().to_owned();
+            let filename = req.path.unwrap().split('/').last().unwrap();
             let mut path_buffer = PathBuf::new();
             path_buffer.push(PathBuf::from(root_dir));
             path_buffer.push(PathBuf::from(filename));
@@ -161,10 +141,15 @@ async fn get_files(req: HttpRequest<'_>, root_dir: Option<String>, content_type:
                 return respond_404();
             }
 
-            let mut buffer = String::new(); // todo: change buffer to vec[u8] to accept common type of files
+            let mut buffer = Vec::new();
             let mut f = File::open(path_buffer).await.unwrap();
-            f.read_to_string(&mut buffer).await.unwrap();
-            // respond_200_with_file(buffer)
+            f.read_to_end(&mut buffer).await.unwrap();  // todo: optimize transfer with `chunked`, etc.
+            let file_extension = filename.split_once('.').unwrap().1; // todo: check whether has extension name
+            let content_type = match file_extension.to_lowercase().as_str() {
+                // "png" => ContentType::Png, // todo: migrate this to `/display` or somewhat
+                // "jpeg" | "jpg" => ContentType::Jpeg,
+                _ => ContentType::Unknown,
+            };
             respond_200_with_content(buffer, content_type)
         }
     }

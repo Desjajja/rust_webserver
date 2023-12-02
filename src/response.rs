@@ -41,12 +41,13 @@ fn get_response(status: Status, content_type: ContentType, content: Option<Vec<u
 			} else {
 				let content_type = match content_type{
 					ContentType::TextPlain => "text/plain",
-					ContentType::Image => "image/jpeg",
+					ContentType::Png => "image/png",
+					ContentType::Jpeg => "image/jpeg",
 					_ => "application/octet-stream",
 				};
 				let content = content.unwrap();
 				let mut rst = format!("HTTP/1.1 200 OK\r\nContent-Type: {}\r\nContent-Length: {}\r\n\r\n", content_type, content.len()).as_bytes().to_owned();
-				rst.extend(content.iter());
+				rst.extend(content);
 				rst
 			}
 		},
@@ -65,8 +66,9 @@ enum Status {
 
 pub enum ContentType{
 	TextPlain,
-	Textfile,
-	Image,
+	// Textfile,
+	Png,
+	Jpeg,
 	Unknown,
 	None,
 }
